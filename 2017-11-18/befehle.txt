@@ -1,0 +1,48 @@
+## Neues Modell: Schema anlegen
+java -jar ~/apps/ili2pg-3.10.10/ili2pg.jar --dbhost geodb-dev.cgjofbdf5rqg.eu-central-1.rds.amazonaws.com --dbdatabase xanadu2 --dbusr stefan --dbpwd $awsDbPass --nameByTopic --disableValidation --defaultSrsCode 2056 --strokeArcs --createFk --createGeomIdx --createFkIdx --createEnumTabs --beautifyEnumDispName --modeldir "http://models.geo.admin.ch;." --models SO_Nutzungsplanung_20171118  --dbschema nplso_neu --schemaimport 
+
+# Altes Modell: Daten importieren
+java -jar ~/apps/ili2pg-3.10.10/ili2pg.jar --dbhost geodb-dev.cgjofbdf5rqg.eu-central-1.rds.amazonaws.com --dbdatabase xanadu2 --dbusr stefan --dbpwd $awsDbPass --nameByTopic --disableValidation --defaultSrsCode 2056 --strokeArcs --createFk --createGeomIdx --createFkIdx --createEnumTabs --beautifyEnumDispName --models SO_Nutzungsplanung_20170915  --dbschema nplso_alt --import ../data/exp1_wis_20171115A.xtf 
+
+
+# Statistik alt (Import):
+Info: exp1_wis_20171115A.xtf: SO_Nutzungsplanung_20170915.Erschliessungsplanung BID=SO_Nutzungsplanung_20170915.Erschliessungsplanung
+Info:      40 objects in CLASS SO_Nutzungsplanung_20170915.Erschliessungsplanung.Erschliessung_Flaechenobjekt
+Info:     153 objects in CLASS SO_Nutzungsplanung_20170915.Erschliessungsplanung.Erschliessung_Linienobjekt
+Info:       4 objects in CLASS SO_Nutzungsplanung_20170915.Erschliessungsplanung.Erschliessung_Punktobjekt
+Info:       8 objects in CLASS SO_Nutzungsplanung_20170915.Erschliessungsplanung.Typ_Erschliessung_Flaechenobjekt
+Info:      18 objects in CLASS SO_Nutzungsplanung_20170915.Erschliessungsplanung.Typ_Erschliessung_Flaechenobjekt_Dokument
+Info:       8 objects in CLASS SO_Nutzungsplanung_20170915.Erschliessungsplanung.Typ_Erschliessung_Linienobjekt
+Info:      16 objects in CLASS SO_Nutzungsplanung_20170915.Erschliessungsplanung.Typ_Erschliessung_Linienobjekt_Dokument
+Info:       2 objects in CLASS SO_Nutzungsplanung_20170915.Erschliessungsplanung.Typ_Erschliessung_Punktobjekt
+Info:       4 objects in CLASS SO_Nutzungsplanung_20170915.Erschliessungsplanung.Typ_Erschliessung_Punktobjekt_Dokument
+Info: exp1_wis_20171115A.xtf: SO_Nutzungsplanung_20170915.Nutzungsplanung BID=SO_Nutzungsplanung_20170915.Nutzungsplanung
+Info:     375 objects in CLASS SO_Nutzungsplanung_20170915.Nutzungsplanung.Grundnutzung
+Info:      64 objects in CLASS SO_Nutzungsplanung_20170915.Nutzungsplanung.Grundnutzung_Pos
+Info:      16 objects in CLASS SO_Nutzungsplanung_20170915.Nutzungsplanung.Typ_Grundnutzung
+Info:      12 objects in CLASS SO_Nutzungsplanung_20170915.Nutzungsplanung.Typ_Grundnutzung_Dokument
+Info:      19 objects in CLASS SO_Nutzungsplanung_20170915.Nutzungsplanung.Typ_Ueberlagernd_Flaeche
+Info:      11 objects in CLASS SO_Nutzungsplanung_20170915.Nutzungsplanung.Typ_Ueberlagernd_Flaeche_Dokument
+Info:       3 objects in CLASS SO_Nutzungsplanung_20170915.Nutzungsplanung.Typ_Ueberlagernd_Linie
+Info:       1 objects in CLASS SO_Nutzungsplanung_20170915.Nutzungsplanung.Typ_Ueberlagernd_Punkt
+Info:       1 objects in CLASS SO_Nutzungsplanung_20170915.Nutzungsplanung.Typ_Ueberlagernd_Punkt_Dokument
+Info:     227 objects in CLASS SO_Nutzungsplanung_20170915.Nutzungsplanung.Ueberlagernd_Flaeche
+Info:       9 objects in CLASS SO_Nutzungsplanung_20170915.Nutzungsplanung.Ueberlagernd_Flaeche_Pos
+Info:      33 objects in CLASS SO_Nutzungsplanung_20170915.Nutzungsplanung.Ueberlagernd_Linie
+Info:       9 objects in CLASS SO_Nutzungsplanung_20170915.Nutzungsplanung.Ueberlagernd_Punkt
+Info: exp1_wis_20171115A.xtf: SO_Nutzungsplanung_20170915.Rechtsvorschriften BID=SO_Nutzungsplanung_20170915.Rechtsvorschriften
+Info:      16 objects in CLASS SO_Nutzungsplanung_20170915.Rechtsvorschriften.Dokument
+Info:       6 objects in CLASS SO_Nutzungsplanung_20170915.Rechtsvorschriften.HinweisWeitereDokumente
+Info:       5 objects in CLASS SO_Nutzungsplanung_20170915.Rechtsvorschriften.Plandokument
+Info: exp1_wis_20171115A.xtf: SO_Nutzungsplanung_20170915.TransferMetadaten BID=SO_Nutzungsplanung_20170915.TransferMetadaten
+Info:       1 objects in CLASS SO_Nutzungsplanung_20170915.TransferMetadaten.Amt
+Info:       2 objects in CLASS SO_Nutzungsplanung_20170915.TransferMetadaten.Datenbestand
+Info: exp1_wis_20171115A.xtf: SO_Nutzungsplanung_20170915.Verfahrenstand BID=SO_Nutzungsplanung_20170915.Verfahrenstand
+
+
+# Umgebaute Daten im neuen Modell exportieren:
+java -jar ~/apps/ili2pg-3.10.10/ili2pg.jar --dbhost geodb-dev.cgjofbdf5rqg.eu-central-1.rds.amazonaws.com --dbdatabase xanadu2 --dbusr stefan --dbpwd $awsDbPass --nameByTopic --disableValidation --defaultSrsCode 2056 --strokeArcs --createFk --createGeomIdx --createFkIdx --createEnumTabs --beautifyEnumDispName --modeldir "http://models.geo.admin.ch;." --models SO_Nutzungsplanung_20171118  --dbschema nplso_neu --export wisen_umbau.xtf 
+
+
+# Import umgebaute Daten
+java -jar ~/apps/ili2pg-3.10.10/ili2pg.jar --dbhost geodb-dev.cgjofbdf5rqg.eu-central-1.rds.amazonaws.com --dbdatabase xanadu2 --dbusr stefan --dbpwd $awsDbPass --nameByTopic --disableValidation --defaultSrsCode 2056 --strokeArcs --createFk --createGeomIdx --createFkIdx --createEnumTabs --beautifyEnumDispName --modeldir "http://models.geo.admin.ch;." --models SO_Nutzungsplanung_20171118  --dbschema nplso_neu_test --import wisen_umbau.xtf 

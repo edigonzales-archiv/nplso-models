@@ -1,0 +1,23 @@
+* oid as uuid überall
+* plandokument fällt weg. ist normales dokument. abkürzung?
+* die ganze verknüpferei mit den dokumenten muss ins handbuch. vorallem die hierachrie (wenn es so angedacht ist). eventuell steht das in den erläuterungen/beispielen zum rahmenmodell. -> wichtigste frage (?): wann kaskade und wann bloss verknpüfung zu n-dokumenten -> wohl am besten einen öreb-profi fragen, weil öreb-rahmenmodell.
+* bei der erschliessungplanung habe ich nichts gemacht, da die Auflösung "geometrie-typ-dokument" von Hand gemacht werden muss, da unbestimmt für Maschine.
+* Grundnutzung: zusätzliches Dokument nicht behandelt bei der Transformation in das neue Datenmodell, da in Wisen dieser Fall nicht vorkommt.
+
+
+
+
+fragen:
+- wie umgehen mit plandokument -> sinnlos wenn man das weiter speziell behandelt? wie machen es andere kantone? sbv muss halt auf plan verweisen oder so. wie so vieles muss das im handbuch geregelt werden.
+- warum sind in wisen zwei SBV keine Rechtsvorschriften und zwei sind? false=schutzzonenreglemente. was sagt das bundesmodell?
+
+
+
+9.5.2 Klasse Rechtsvorschrift Diese Klasse ist eine Erweiterung der Klasse Dokument für die Rechtsvorschriften. Damit sind Regle-mente, Vorschriften etc. gemeint, die generell-konkret sind und innerhalb desselben Verfahrens wie die Geobasisdaten verabschiedet worden sind. Die Klasse hat keine zusätzlichen Attribute. 
+
+
+Genehmigungsentscheide (und gesetzliche Grundlagen) sind anscheinend im Kontext ÖREB Dokumente und keine Rechtsvorschrift (altes Dokument für Rahmenmodell-NPL-Beispiel). Rechtsvorschriften sind wohl Zonenordnung und SBV und Pläne etc. Frage bleibt: wann kommt die Kaskade ins Spiel. Lustig: gemäss Auszugsweisung ist der Genehmigungsentscheid aber bei den Rechtsvorschriften. -> kettiger hat mal was geschrieben. 
+
+Im öreb-Datensatz "Projektierungszonen Flughafen" zeigt die Verfügung auf den Plan. Und auf die gesetzliche Grundlage.
+
+Herrje: Irgendwo muss ja die Hierachie herkommen.
