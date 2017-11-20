@@ -1,14 +1,38 @@
 INTERLIS 2.3;
 
-!!@ File=SO_Nutzungsplanung_20170915.ili
-!!@ Title=Nutzungsplanung
-!!@ shortDescription="Nutzungsplanungsmodell des Kantons Solothurn. Umfasst;die im MGDM des Bundes definierten Informationen (GeoIV_ID: 73, 145, 157, 159);sowie Erweiterungen des Kt. Solothurn"
-!!@ Issuer=http://arp.so.ch
-!!@ technicalContact=http://agi.so.ch
-!!@ furtherInformation=Arbeitshilfe
+!!==============================================================================
+!!@ File = "SO_Nutzungsplanung_20171118.ili"; 
+!!@ Title = "Nutzungsplanung"; 
+!!@ shortDescription = "Nutzungsplanungsmodell des Kantons Solothurn. Umfasst 
+!!@ die im MGDM des Bundes definierten Informationen (GeoIV_ID: 73, 145, 157, 159) 
+!!@ sowie Erweiterungen des Kt. Solothurn"; 
+!!@ Issuer = "http://arp.so.ch"; 
+!!@ technicalContact = "http://agi.so.ch"; 
+!!@ furtherInformation = "Arbeitshilfe";
+!!  Erfassungsmodell;
+!!  Compiler-Version = "4.7.3-20170524"; 
+!!------------------------------------------------------------------------------
+!! Version    | wer | Änderung 
+!!------------------------------------------------------------------------------
+!! 2015-05-13 | SK  | Modell (v26) für Pilot durch Stefan Keller (SK) erstellt 
+!! 2016-11-11 | SK  | Überarbeitung auf Version 32 (dm_npl_ktso_v32_LV95_ili2.ili)
+!! 2016-11-29 | OJ  | Tech. Review und Finalisierung durch Oliver Jeker (AGI)
+!! 2017-01-05 | OJ  | Korrektur Beziehungsrollennamen = Klassennamen
+!! 2017-09-01 | al  | - Lockerung der Beziehung Dokument <-> Geometrie
+!!            |     | - NP_Typ_Kanton_Grundnutzung mit N134 ergänzt
+!!            |     | - NP_Typ_Kanton_Ueberlagernd_Flaeche mit N812,N813 und
+!!            |     |   N820-823 ergänzt
+!!            |     | - Rechtschreibung bei Ueberbauungsziffer
+!!            |     | - Modell mit Beschreibung ergänzt
+!! 2017-09-15 | al  | OID AS INTERLIS.UUIDOID wieder eingefügt
+!! 2017-11-18 | sz  | - OID AS INTERLIS.UUIDOID für sämtliche Klassen
+!!            |     | - Zusätzliche Assoziation Geometrie <-> Dokument gelöscht
+!!            |     | - Klasse Plandokument gelöscht
+!!==============================================================================
+
 MODEL SO_Nutzungsplanung_20171118 (de)
 AT "http://www.geo.so.ch"
-VERSION "2017-09-15"  =
+VERSION "2017-11-18"  =
   IMPORTS GeometryCHLV95_V1,CHAdminCodes_V1;
 
   DOMAIN
