@@ -46,3 +46,51 @@ java -jar ~/apps/ili2pg-3.10.10/ili2pg.jar --dbhost geodb-dev.cgjofbdf5rqg.eu-ce
 
 # Import umgebaute Daten
 java -jar ~/apps/ili2pg-3.10.10/ili2pg.jar --dbhost geodb-dev.cgjofbdf5rqg.eu-central-1.rds.amazonaws.com --dbdatabase xanadu2 --dbusr stefan --dbpwd $awsDbPass --nameByTopic --disableValidation --defaultSrsCode 2056 --strokeArcs --createFk --createGeomIdx --createFkIdx --createEnumTabs --beautifyEnumDispName --modeldir "http://models.geo.admin.ch;." --models SO_Nutzungsplanung_20171118  --dbschema nplso_neu_test --import wisen_umbau.xtf 
+
+
+# Rohr
+
+# Altes Modell: Daten importieren
+java -jar ~/apps/ili2pg-3.10.10/ili2pg.jar --dbhost geodb-dev.cgjofbdf5rqg.eu-central-1.rds.amazonaws.com --dbdatabase xanadu2 --dbusr stefan --dbpwd $awsDbPass --nameByTopic --disableValidation --defaultSrsCode 2056 --strokeArcs --createFk --createGeomIdx --createFkIdx --createEnumTabs --beautifyEnumDispName --models SO_Nutzungsplanung_20170915  --dbschema nplso_alt --import ../data/exp1_nplroh_20171122C.xtf 
+
+Info: exp1_nplroh_20171122C.xtf: SO_Nutzungsplanung_20170915.Erschliessungsplanung BID=SO_Nutzungsplanung_20170915.Erschliessungsplanung
+Info:      10 objects in CLASS SO_Nutzungsplanung_20170915.Erschliessungsplanung.Erschliessung_Flaechenobjekt
+Info:      34 objects in CLASS SO_Nutzungsplanung_20170915.Erschliessungsplanung.Erschliessung_Linienobjekt
+Info:       3 objects in CLASS SO_Nutzungsplanung_20170915.Erschliessungsplanung.Typ_Erschliessung_Flaechenobjekt
+Info:       3 objects in CLASS SO_Nutzungsplanung_20170915.Erschliessungsplanung.Typ_Erschliessung_Flaechenobjekt_Dokument
+Info:       5 objects in CLASS SO_Nutzungsplanung_20170915.Erschliessungsplanung.Typ_Erschliessung_Linienobjekt
+Info:       4 objects in CLASS SO_Nutzungsplanung_20170915.Erschliessungsplanung.Typ_Erschliessung_Linienobjekt_Dokument
+Info: exp1_nplroh_20171122C.xtf: SO_Nutzungsplanung_20170915.Nutzungsplanung BID=SO_Nutzungsplanung_20170915.Nutzungsplanung
+Info:     151 objects in CLASS SO_Nutzungsplanung_20170915.Nutzungsplanung.Grundnutzung
+Info:      25 objects in CLASS SO_Nutzungsplanung_20170915.Nutzungsplanung.Grundnutzung_Pos
+Info:      13 objects in CLASS SO_Nutzungsplanung_20170915.Nutzungsplanung.Typ_Grundnutzung
+Info:      13 objects in CLASS SO_Nutzungsplanung_20170915.Nutzungsplanung.Typ_Grundnutzung_Dokument
+Info:      11 objects in CLASS SO_Nutzungsplanung_20170915.Nutzungsplanung.Typ_Ueberlagernd_Flaeche
+Info:      11 objects in CLASS SO_Nutzungsplanung_20170915.Nutzungsplanung.Typ_Ueberlagernd_Flaeche_Dokument
+Info:       2 objects in CLASS SO_Nutzungsplanung_20170915.Nutzungsplanung.Typ_Ueberlagernd_Linie
+Info:       2 objects in CLASS SO_Nutzungsplanung_20170915.Nutzungsplanung.Typ_Ueberlagernd_Linie_Dokument
+Info:       5 objects in CLASS SO_Nutzungsplanung_20170915.Nutzungsplanung.Typ_Ueberlagernd_Punkt
+Info:       5 objects in CLASS SO_Nutzungsplanung_20170915.Nutzungsplanung.Typ_Ueberlagernd_Punkt_Dokument
+Info:      65 objects in CLASS SO_Nutzungsplanung_20170915.Nutzungsplanung.Ueberlagernd_Flaeche
+Info:      17 objects in CLASS SO_Nutzungsplanung_20170915.Nutzungsplanung.Ueberlagernd_Flaeche_Pos
+Info:       4 objects in CLASS SO_Nutzungsplanung_20170915.Nutzungsplanung.Ueberlagernd_Linie
+Info:       2 objects in CLASS SO_Nutzungsplanung_20170915.Nutzungsplanung.Ueberlagernd_Linie_Pos
+Info:       8 objects in CLASS SO_Nutzungsplanung_20170915.Nutzungsplanung.Ueberlagernd_Punkt
+Info:       1 objects in CLASS SO_Nutzungsplanung_20170915.Nutzungsplanung.Ueberlagernd_Punkt_Pos
+Info: exp1_nplroh_20171122C.xtf: SO_Nutzungsplanung_20170915.Rechtsvorschriften BID=SO_Nutzungsplanung_20170915.Rechtsvorschriften
+Info:       3 objects in CLASS SO_Nutzungsplanung_20170915.Rechtsvorschriften.Dokument
+Info: exp1_nplroh_20171122C.xtf: SO_Nutzungsplanung_20170915.TransferMetadaten BID=SO_Nutzungsplanung_20170915.TransferMetadaten
+Info:       1 objects in CLASS SO_Nutzungsplanung_20170915.TransferMetadaten.Amt
+Info:       1 objects in CLASS SO_Nutzungsplanung_20170915.TransferMetadaten.Datenbestand
+Info: exp1_nplroh_20171122C.xtf: SO_Nutzungsplanung_20170915.Verfahrenstand BID=SO_Nutzungsplanung_20170915.Verfahrenstand
+Info: ...import done
+
+# Umgebaute Daten im neuen Modell exportieren:
+java -jar ~/apps/ili2pg-3.10.10/ili2pg.jar --dbhost geodb-dev.cgjofbdf5rqg.eu-central-1.rds.amazonaws.com --dbdatabase xanadu2 --dbusr stefan --dbpwd $awsDbPass --nameByTopic --disableValidation --defaultSrsCode 2056 --strokeArcs --createFk --createGeomIdx --createFkIdx --createEnumTabs --beautifyEnumDispName --modeldir "http://models.geo.admin.ch;." --models SO_Nutzungsplanung_20171118  --dbschema nplso_neu --export rohr_umbau.xtf 
+
+# Kappel
+# Altes Modell: Daten importieren
+java -jar ~/apps/ili2pg-3.10.10/ili2pg.jar --dbhost geodb-dev.cgjofbdf5rqg.eu-central-1.rds.amazonaws.com --dbdatabase xanadu2 --dbusr stefan --dbpwd $awsDbPass --nameByTopic --disableValidation --defaultSrsCode 2056 --strokeArcs --createFk --createGeomIdx --createFkIdx --createEnumTabs --beautifyEnumDispName --models SO_Nutzungsplanung_20170915  --dbschema nplso_alt --import ../data/exp1_nplkap_20171122C.xtf 
+
+# Umgebaute Daten im neuen Modell exportieren:
+java -jar ~/apps/ili2pg-3.10.10/ili2pg.jar --dbhost geodb-dev.cgjofbdf5rqg.eu-central-1.rds.amazonaws.com --dbdatabase xanadu2 --dbusr stefan --dbpwd $awsDbPass --nameByTopic --disableValidation --defaultSrsCode 2056 --strokeArcs --createFk --createGeomIdx --createFkIdx --createEnumTabs --beautifyEnumDispName --modeldir "http://models.geo.admin.ch;." --models SO_Nutzungsplanung_20171118  --dbschema nplso_neu --export kappel_umbau.xtf 
