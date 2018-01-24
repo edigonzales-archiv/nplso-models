@@ -1,0 +1,27 @@
+INTERLIS 2.3;
+
+MODEL SO_Nutzungsplanung_Publikation_20180131 (de)
+AT "mailto:stefan@localhost"
+VERSION "2018-01-24"  =
+
+  TOPIC TopicDef5 =
+
+    DOMAIN
+
+      Einzelflaeche
+      EXTENDS GeometryCHLV95_V1.Surface = SURFACE WITH (STRAIGHTS) VERTEX GeometryCHLV95_V1.Coord2 WITHOUT OVERLAPS>0.001;
+
+      Gebietseinteilung
+      EXTENDS GeometryCHLV95_V1.Area = AREA WITH (STRAIGHTS) VERTEX GeometryCHLV95_V1.Coord2 WITHOUT OVERLAPS>0.001;
+
+      Rotation = 0 .. 399;
+
+      Schriftgroesse = (
+        klein,
+        mittel,
+        gross
+      );
+
+  END TopicDef5;
+
+END SO_Nutzungsplanung_Publikation_20180131.
