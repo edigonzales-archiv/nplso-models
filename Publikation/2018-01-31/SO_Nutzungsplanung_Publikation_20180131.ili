@@ -3,18 +3,219 @@ INTERLIS 2.3;
 MODEL SO_Nutzungsplanung_Publikation_20180131 (de)
 AT "mailto:stefan@localhost"
 VERSION "2018-01-24"  =
+  IMPORTS GeometryCHLV95_V1,Units,CHAdminCodes_V1;
 
-  TOPIC TopicDef5 =
+  TOPIC Nutzungsplanung =
+    OID AS INTERLIS.UUIDOID;
 
     DOMAIN
 
       Einzelflaeche
       EXTENDS GeometryCHLV95_V1.Surface = SURFACE WITH (STRAIGHTS) VERTEX GeometryCHLV95_V1.Coord2 WITHOUT OVERLAPS>0.001;
 
+    /** Rechtsvorschriften (Zonenreglemente, Gestaltungspläne, Sonderbauvorschriften), RRB und weitere Dokumente.
+     */
+    STRUCTURE Dokument =
+      /** Bleibt leer.
+       */
+      Id : TEXT*16;
+      /** Dokumentart z.B. Regierungsratsbeschluss, Zonenreglement, Sonderbauvorschriften usw.
+       */
+      Titel : MANDATORY TEXT*80;
+      /** Vollständiger Titel des Dokuments.
+       */
+      OffiziellerTitel : TEXT*240;
+      /** Abkürzung der Dokumentart z.B. RRB, ZR, SBV.
+       */
+      Abkuerzung : TEXT*10;
+      /** OffizielleNr für Entscheid, Plan und Sonderbauvorschriften ist identisch zur Nummerierung im Planregister. OffizielleNr. für Reglemente bestehen aus Gemeindenummer und Kürzel der Reglementart.
+       */
+      OffizielleNr : MANDATORY TEXT*20;
+      /** Abkürzung Kanton.
+       */
+      Kanton : CHAdminCodes_V1.CHCantonCode;
+      /** Gemeindenummer vom schweizerischen Bundesamt für Statistik (BFS-Nr.).
+       */
+      Gemeinde : CHAdminCodes_V1.CHMunicipalityCode;
+      /** Datum des Regierungsratsbeschlusses.
+       */
+      publiziertAb : MANDATORY INTERLIS.XMLDate;
+      /** Rechtsstatus des Dokumentes.
+       */
+      Rechtsstatus : MANDATORY TEXT*20;
+      /** Relative Internetadresse des Dokuments auf Planregister. D.h. ohne "https://geoweb.so.ch/zonenplaene/Zonenplaene_pdf/".
+       */
+      TextImWeb : INTERLIS.URI;
+      /** Erläuternder Text oder Bemerkungen zum Dokument.
+       */
+      Bemerkungen : MTEXT*240;
+      /** Rechtsvorschrift oder anderes Dokument.
+       */
+      Rechtsvorschrift : MANDATORY INTERLIS.BOOLEAN;
+    END Dokument;
+
+    DOMAIN
+
       Gebietseinteilung
       EXTENDS GeometryCHLV95_V1.Area = AREA WITH (STRAIGHTS) VERTEX GeometryCHLV95_V1.Coord2 WITHOUT OVERLAPS>0.001;
 
-      Rotation = 0 .. 399;
+    /** Flächenobjekte der Erschliessungsplanung.
+     */
+    CLASS Erschliessung_Flaechenobjekt =
+      /** Bezeichnung des Typs.
+       */
+      Typ_Bezeichnung : MANDATORY TEXT*80;
+      /** Abkürzung der Bezeichnung.
+       */
+      Typ_Abkuerzung : TEXT*12;
+      /** Verbindlichkeit des Typs.
+       */
+      Typ_Verbindlichkeit : MANDATORY TEXT*30;
+      /** Erläuternder Text zum Typ.
+       */
+      Typ_Bemerkungen : MTEXT*240;
+      /** Zugehöriger Typ des Kantons.
+       */
+      Typ_Kt : MANDATORY TEXT*60;
+      /** 4-stelliger kommunaler Code.
+       */
+      Typ_Code_kommunal : MANDATORY TEXT*12;
+      /** Geometrie als Einzelfläche.
+       */
+      Geometrie : MANDATORY Einzelflaeche;
+      /** Bleibt leer.
+       */
+      Name_Nummer : TEXT*20;
+      /** Rechtsstatus
+       */
+      Rechtsstatus : MANDATORY TEXT*20;
+      /** Datum des Regierungsratsbeschlusses.
+       */
+      publiziertAb : MANDATORY INTERLIS.XMLDate;
+      /** Bemerkung zum Flächenobjekt.
+       */
+      Bemerkungen : MTEXT*240;
+      /** Name der Firma, die die Daten erfasst hat.
+       */
+      Erfasser : TEXT*80;
+      /** Datum der Erfassung.
+       */
+      Datum : MANDATORY INTERLIS.XMLDate;
+      /** Dem Typ zugewiesene Dokumente.
+       */
+      Dokument : BAG {0..*} OF SO_Nutzungsplanung_Publikation_20180131.Nutzungsplanung.Dokument;
+      /** BFS-Nummer des Objektes (v.a. für internen Gebrauch).
+       */
+      BFS_Nr : 0 .. 9999;
+    END Erschliessung_Flaechenobjekt;
+
+    /** Linienobjekte der Erschliessungsplanung.
+     */
+    CLASS Erschliessung_Linienobjekt =
+      /** Bezeichnung des Typs.
+       */
+      Typ_Bezeichnung : MANDATORY TEXT*80;
+      /** Abkürzung der Bezeichnung.
+       */
+      Typ_Abkuerzung : TEXT*12;
+      /** Verbindlichkeit des Typs.
+       */
+      Typ_Verbindlichkeit : MANDATORY TEXT*30;
+      /** Erläuternder Text zum Typ.
+       */
+      Typ_Bemerkungen : MTEXT*240;
+      /** Zugehöriger Typ des Kantons.
+       */
+      Typ_Kt : MANDATORY TEXT*60;
+      /** 4-stelliger kommunaler Code.
+       */
+      Typ_Code_kommunal : MANDATORY TEXT*12;
+      /** Geometrie als Linie.
+       */
+      Geometrie : MANDATORY GeometryCHLV95_V1.Line;
+      /** Bleibt leer.
+       */
+      Name_Nummer : TEXT*20;
+      /** Rechtsstatus
+       */
+      Rechtsstatus : MANDATORY TEXT*20;
+      /** Datum des Regierungsratsbeschlusses.
+       */
+      publiziertAb : MANDATORY INTERLIS.XMLDate;
+      /** Bemerkung zum Linienobjekt.
+       */
+      Bemerkungen : MTEXT*240;
+      /** Name der Firma, die die Daten erfasst hat.
+       */
+      Erfasser : TEXT*80;
+      /** Datum der Erfassung.
+       */
+      Datum : MANDATORY INTERLIS.XMLDate;
+      /** Dem Typ zugewiesene Dokumente.
+       */
+      Dokument : BAG {0..*} OF SO_Nutzungsplanung_Publikation_20180131.Nutzungsplanung.Dokument;
+      /** BFS-Nummer des Objektes (v.a. für internen Gebrauch).
+       */
+      BFS_Nr : 0 .. 9999;
+    END Erschliessung_Linienobjekt;
+
+    DOMAIN
+
+      /** Rotation für Beschriftungen. Nullpunkt für QGIS umgerechnet.
+       */
+      Rotation = 0 .. 359 [Units.Angle_Degree];
+
+    /** Punkteobjekte der Erschliessungsplanung.
+     */
+    CLASS Erschliessung_Punktobjekt =
+      /** Bezeichnung des Typs.
+       */
+      Typ_Bezeichnung : MANDATORY TEXT*80;
+      /** Abkürzung der Bezeichnung.
+       */
+      Typ_Abkuerzung : TEXT*12;
+      /** Verbindlichkeit des Typs.
+       */
+      Typ_Verbindlichkeit : MANDATORY TEXT*30;
+      /** Erläuternder Text zum Typ.
+       */
+      Typ_Bemerkungen : MTEXT*240;
+      /** Zugehöriger Typ des Kantons.
+       */
+      Typ_Kt : MANDATORY TEXT*60;
+      /** 4-stelliger kommunaler Code.
+       */
+      Typ_Code_kommunal : MANDATORY TEXT*12;
+      /** Geometrie als Punkt.
+       */
+      Geometrie : MANDATORY GeometryCHLV95_V1.Coord2;
+      /** Bleibt leer.
+       */
+      Name_Nummer : TEXT*20;
+      /** Rechtsstatus
+       */
+      Rechtsstatus : MANDATORY TEXT*20;
+      /** Datum des Regierungsratsbeschlusses.
+       */
+      publiziertAb : MANDATORY INTERLIS.XMLDate;
+      /** Bemerkung zu der einzelnen überlagernden Fläche.
+       */
+      Bemerkungen : MTEXT*240;
+      /** Name der Firma, die die Daten erfasst hat.
+       */
+      Erfasser : TEXT*80;
+      /** Datum der Erfassung.
+       */
+      Datum : MANDATORY INTERLIS.XMLDate;
+      /** Dem Typ zugewiesene Dokumente.
+       */
+      Dokument : BAG {0..*} OF SO_Nutzungsplanung_Publikation_20180131.Nutzungsplanung.Dokument;
+      /** BFS-Nummer des Objektes (v.a. für internen Gebrauch).
+       */
+      BFS_Nr : 0 .. 9999;
+    END Erschliessung_Punktobjekt;
+
+    DOMAIN
 
       Schriftgroesse = (
         klein,
@@ -22,6 +223,374 @@ VERSION "2018-01-24"  =
         gross
       );
 
-  END TopicDef5;
+    /** Beschriftung für Erschliessungplanung.
+     */
+    CLASS Erschliessung_Beschriftung =
+      /** Bezeichnung des Typs.
+       */
+      Typ_Bezeichnung : MANDATORY TEXT*80;
+      /** Abkürzung der Bezeichnung.
+       */
+      Typ_Abkuerzung : TEXT*12;
+      /** Verbindlichkeit des Typs.
+       */
+      Typ_Verbindlichkeit : MANDATORY TEXT*30;
+      /** Erläuternder Text zum Typ.
+       */
+      Typ_Bemerkungen : MTEXT*240;
+      /** Zugehöriger Typ des Kantons.
+       */
+      Typ_Kt : MANDATORY TEXT*60;
+      /** 4-stelliger kommunaler Code.
+       */
+      Typ_Code_kommunal : MANDATORY TEXT*12;
+      /** Position der Beschriftung.
+       */
+      Pos : GeometryCHLV95_V1.Coord2;
+      /** Orientierung der Beschriftung.
+       */
+      Pos_Ori : Rotation;
+      /** HAlignment der Beschriftung.
+       */
+      Pos_HAli : HALIGNMENT;
+      /** VAlignment der Beschriftung.
+       */
+      Pos_VAli : VALIGNMENT;
+      /** Grösse der Beschriftung.
+       */
+      Pos_Groesse : Schriftgroesse;
+      /** BFS-Nummer des Objektes (v.a. für internen Gebrauch).
+       */
+      BFS_Nr : 0 .. 9999;
+    END Erschliessung_Beschriftung;
+
+    /** Denormalisierte Klasse der Grundnutzung. Dokumente werden als JSON-Objekte abgebildet.
+     */
+    CLASS Grundnutzung =
+      /** Bezeichnung des Typs.
+       */
+      Typ_Bezeichnung : MANDATORY TEXT*80;
+      /** Abkürzung der Bezeichnung.
+       */
+      Typ_Abkuerzung : TEXT*12;
+      /** Verbindlichkeit des Typs.
+       */
+      Typ_Verbindlichkeit : MANDATORY TEXT*30;
+      /** Erläuternder Text zum Typ.
+       */
+      Typ_Bemerkungen : MTEXT*240;
+      /** Zugehöriger Typ des Kantons.
+       */
+      Typ_Kt : MANDATORY TEXT*60;
+      /** 4-stelliger kommunaler Code.
+       */
+      Typ_Code_kommunal : MANDATORY TEXT*12;
+      /** Erlaubte Nutzungsziffer.
+       */
+      Typ_Nutzungsziffer : 0.00 .. 9.00;
+      /** Art der Nutzungsziffer.
+       */
+      Typ_Nutzungsziffer_Art : TEXT*20;
+      /** Anzahl der erlaubten Geschosse.
+       */
+      Typ_Geschosszahl : 0 .. 50;
+      /** Geometrie als Gebietseinteilung.
+       */
+      Geometrie : MANDATORY Gebietseinteilung;
+      /** Bleibt leer.
+       */
+      Name_Nummer : TEXT*20;
+      /** Rechtsstatus
+       */
+      Rechtsstatus : MANDATORY TEXT*20;
+      /** Datum des Regierungsratsbeschlusses.
+       */
+      publiziertAb : MANDATORY INTERLIS.XMLDate;
+      /** Bemerkung zu der einzelnen Grundnutzungsgeometrie.
+       */
+      Bemerkungen : MTEXT*240;
+      /** Name der Firma, die die Daten erfasst hat.
+       */
+      Erfasser : TEXT*80;
+      /** Datum der Erfassung.
+       */
+      Datum : MANDATORY INTERLIS.XMLDate;
+      /** Dem Typ zugewiesene Dokumente.
+       */
+      Dokument : BAG {0..*} OF SO_Nutzungsplanung_Publikation_20180131.Nutzungsplanung.Dokument;
+      /** BFS-Nummer des Objektes (v.a. für internen Gebrauch).
+       */
+      BFS_Nr : 0 .. 9999;
+    END Grundnutzung;
+
+    /** Denormalisierte Klasse der überlagernden Flächen. Dokumente werden als JSON-Objekte abgebildet.
+     */
+    CLASS Ueberlagernd_Flaeche =
+      /** Bezeichnung des Typs.
+       */
+      Typ_Bezeichnung : MANDATORY TEXT*80;
+      /** Abkürzung der Bezeichnung.
+       */
+      Typ_Abkuerzung : TEXT*12;
+      /** Verbindlichkeit des Typs.
+       */
+      Typ_Verbindlichkeit : MANDATORY TEXT*30;
+      /** Erläuternder Text zum Typ.
+       */
+      Typ_Bemerkungen : MTEXT*240;
+      /** Zugehöriger Typ des Kantons.
+       */
+      Typ_Kt : MANDATORY TEXT*60;
+      /** 4-stelliger kommunaler Code.
+       */
+      Typ_Code_kommunal : MANDATORY TEXT*12;
+      /** Geometrie als Gebietseinteilung.
+       */
+      Geometrie : MANDATORY Einzelflaeche;
+      /** Bleibt leer.
+       */
+      Name_Nummer : TEXT*20;
+      /** Rechtsstatus
+       */
+      Rechtsstatus : MANDATORY TEXT*20;
+      /** Datum des Regierungsratsbeschlusses.
+       */
+      publiziertAb : MANDATORY INTERLIS.XMLDate;
+      /** Bemerkung zu der einzelnen überlagernden Fläche.
+       */
+      Bemerkungen : MTEXT*240;
+      /** Name der Firma, die die Daten erfasst hat.
+       */
+      Erfasser : TEXT*80;
+      /** Datum der Erfassung.
+       */
+      Datum : MANDATORY INTERLIS.XMLDate;
+      /** Dem Typ zugewiesene Dokumente.
+       */
+      Dokument : BAG {0..*} OF SO_Nutzungsplanung_Publikation_20180131.Nutzungsplanung.Dokument;
+      /** BFS-Nummer des Objektes (v.a. für internen Gebrauch).
+       */
+      BFS_Nr : 0 .. 9999;
+    END Ueberlagernd_Flaeche;
+
+    CLASS VS_Perimeter_Verfahrensstand =
+      /** Geltungsbereich für die Mutation
+       */
+      Geometrie : MANDATORY Einzelflaeche;
+      /** Planungsart der Mutation.
+       */
+      Planungsart : MANDATORY TEXT*30;
+      /** Verfahrensstufe der Mutation.
+       */
+      Verfahrensstufe : MANDATORY TEXT*30;
+      /** Bleibt leer.
+       */
+      Name_Nummer : TEXT*20;
+      /** Erläuternder Text oder Bemerkungen zum Verfahrenstand.
+       */
+      Bemerkungen : MTEXT*240;
+      /** Name der Firma, die die Daten erfasst hat.
+       */
+      Erfasser : TEXT*80;
+      /** Datum der Erfassung.
+       */
+      Datum : MANDATORY INTERLIS.XMLDate;
+      /** BFS-Nummer des Objektes (v.a. für internen Gebrauch).
+       */
+      BFS_Nr : 0 .. 9999;
+    END VS_Perimeter_Verfahrensstand;
+
+    /** Denormalisierte Klasse der überlagernden Linien. Dokumente werden als JSON-Objekte abgebildet.
+     */
+    CLASS Ueberlagernd_Linie =
+      /** Bezeichnung des Typs.
+       */
+      Typ_Bezeichnung : MANDATORY TEXT*80;
+      /** Abkürzung der Bezeichnung.
+       */
+      Typ_Abkuerzung : TEXT*12;
+      /** Verbindlichkeit des Typs.
+       */
+      Typ_Verbindlichkeit : MANDATORY TEXT*30;
+      /** Erläuternder Text zum Typ.
+       */
+      Typ_Bemerkungen : MTEXT*240;
+      /** Zugehöriger Typ des Kantons.
+       */
+      Typ_Kt : MANDATORY TEXT*60;
+      /** 4-stelliger kommunaler Code.
+       */
+      Typ_Code_kommunal : MANDATORY TEXT*12;
+      /** Geometrie als Linie.
+       */
+      Geometrie : MANDATORY GeometryCHLV95_V1.Line;
+      /** Bleibt leer.
+       */
+      Name_Nummer : TEXT*20;
+      /** Rechtsstatus der Geometrie.
+       */
+      Rechtsstatus : MANDATORY TEXT*20;
+      /** Datum des Regierungsratsbeschlusses.
+       */
+      publiziertAb : MANDATORY INTERLIS.XMLDate;
+      /** Bemerkung zu der einzelnen überlagernden Linie.
+       */
+      Bemerkungen : MTEXT*240;
+      /** Name der Firma, die die Daten erfasst hat.
+       */
+      Erfasser : TEXT*80;
+      /** Datum der Erfassung.
+       */
+      Datum : MANDATORY INTERLIS.XMLDate;
+      /** Dem Typ zugewiesene Dokumente.
+       */
+      Dokument : BAG {0..*} OF SO_Nutzungsplanung_Publikation_20180131.Nutzungsplanung.Dokument;
+      /** BFS-Nummer des Objektes (v.a. für internen Gebrauch).
+       */
+      BFS_Nr : 0 .. 9999;
+    END Ueberlagernd_Linie;
+
+    CLASS VS_Perimeter_Beschriftung =
+      /** Verfahrensstufe der Mutation.
+       */
+      Verfahrensstufe : MANDATORY TEXT*30;
+      /** Bleibt leer.
+       */
+      Name_Nummer : TEXT*20;
+      /** Position der Beschriftung.
+       */
+      Pos : GeometryCHLV95_V1.Coord2;
+      /** Orientierung der Beschriftung.
+       */
+      Pos_Ori : Rotation;
+      /** HAlignment der Beschriftung.
+       */
+      Pos_HAli : HALIGNMENT;
+      /** VAlignment der Beschriftung.
+       */
+      Pos_VAli : VALIGNMENT;
+      /** Grösse der Beschriftung.
+       */
+      Pos_Groesse : Schriftgroesse;
+      /** BFS-Nummer des Objektes (v.a. für internen Gebrauch).
+       */
+      BFS_Nr : 0 .. 9999;
+    END VS_Perimeter_Beschriftung;
+
+    /** Metadaten des Transfers.
+     */
+    CLASS TransferMetadaten =
+      /** Firmenname des Erfassers.
+       */
+      Amt_Name : MANDATORY TEXT*80;
+      /** Verweis auf die Webseite.
+       */
+      AmtImWeb : URI;
+      /** Datum des Datenstandes, z.B. Gemeinderatsbeschluss oder bereinigte Daten nach RRB
+       */
+      Stand : MANDATORY INTERLIS.XMLDate;
+      /** Datum der Datenlieferung.
+       */
+      Lieferdatum : INTERLIS.XMLDate;
+      /** Erläuternder Text oder Bemerkungen zum Datenbestand.
+       */
+      Bemerkungen : MTEXT*240;
+      /** BFS-Nummer des Objektes (v.a. für internen Gebrauch).
+       */
+      BFS_Nr : 0 .. 9999;
+    END TransferMetadaten;
+
+    /** Denormalisierte Klasse der überlagernden Punkte. Dokumente werden als JSON-Objekte abgebildet.
+     */
+    CLASS Ueberlagernd_Punkt =
+      /** Bezeichnung des Typs.
+       */
+      Typ_Bezeichnung : MANDATORY TEXT*80;
+      /** Abkürzung der Bezeichnung.
+       */
+      Typ_Abkuerzung : TEXT*12;
+      /** Verbindlichkeit des Typs.
+       */
+      Typ_Verbindlichkeit : MANDATORY TEXT*30;
+      /** Erläuternder Text zum Typ.
+       */
+      Typ_Bemerkungen : MTEXT*240;
+      /** Zugehöriger Typ des Kantons.
+       */
+      Typ_Kt : MANDATORY TEXT*60;
+      /** 4-stelliger kommunaler Code.
+       */
+      Typ_Code_kommunal : MANDATORY TEXT*12;
+      /** Geometrie als Punkt.
+       */
+      Geometrie : MANDATORY GeometryCHLV95_V1.Coord2;
+      /** Bleibt leer.
+       */
+      Name_Nummer : TEXT*20;
+      /** Rechtsstatus
+       */
+      Rechtsstatus : MANDATORY TEXT*20;
+      /** Datum des Regierungsratsbeschlusses.
+       */
+      publiziertAb : MANDATORY INTERLIS.XMLDate;
+      /** Bemerkung zum einzelnen Punkt.
+       */
+      Bemerkungen : MTEXT*240;
+      /** Name der Firma, die die Daten erfasst hat.
+       */
+      Erfasser : TEXT*80;
+      /** Datum der Erfassung.
+       */
+      Datum : MANDATORY INTERLIS.XMLDate;
+      /** Dem Typ zugewiesene Dokumente.
+       */
+      Dokument : BAG {0..*} OF SO_Nutzungsplanung_Publikation_20180131.Nutzungsplanung.Dokument;
+      /** BFS-Nummer des Objektes (v.a. für internen Gebrauch).
+       */
+      BFS_Nr : 0 .. 9999;
+    END Ueberlagernd_Punkt;
+
+    /** Beschriftung für Nutzungsplanung (Grundnutzung, überlagernde Flächen, Linien und Punkte).
+     */
+    CLASS Nutzungsplanung_Beschriftung =
+      /** Bezeichnung des Typs.
+       */
+      Typ_Bezeichnung : MANDATORY TEXT*80;
+      /** Abkürzung der Bezeichnung.
+       */
+      Typ_Abkuerzung : TEXT*12;
+      /** Verbindlichkeit des Typs.
+       */
+      Typ_Verbindlichkeit : MANDATORY TEXT*30;
+      /** Erläuternder Text zum Typ.
+       */
+      Typ_Bemerkungen : MTEXT*240;
+      /** Zugehöriger Typ des Kantons.
+       */
+      Typ_Kt : MANDATORY TEXT*60;
+      /** 4-stelliger kommunaler Code.
+       */
+      Typ_Code_kommunal : MANDATORY TEXT*12;
+      /** Position der Beschriftung.
+       */
+      Pos : GeometryCHLV95_V1.Coord2;
+      /** Orientierung der Beschriftung.
+       */
+      Pos_Ori : Rotation;
+      /** HAlignment der Beschriftung.
+       */
+      Pos_HAli : HALIGNMENT;
+      /** VAlignment der Beschriftung.
+       */
+      Pos_VAli : VALIGNMENT;
+      /** Grösse der Beschriftung.
+       */
+      Pos_Groesse : Schriftgroesse;
+      /** BFS-Nummer des Objektes (v.a. für internen Gebrauch).
+       */
+      BFS_Nr : 0 .. 9999;
+    END Nutzungsplanung_Beschriftung;
+
+  END Nutzungsplanung;
 
 END SO_Nutzungsplanung_Publikation_20180131.
